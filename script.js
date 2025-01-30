@@ -6,6 +6,7 @@ let oGameData = {};
 window.addEventListener('load', () => {
     initGlobalObject();
     prepGame();
+     
 });
 
 function initGlobalObject() {
@@ -90,12 +91,45 @@ function prepGame() {
 
     let startGameBtnRef = document.querySelector("#newGame")
     
-    startGameBtnRef.addEventListener('click', initiateGame)
+    startGameBtnRef.addEventListener('click', () => {
+        
+        if (validateForm()) {
+            console.log("Rätt ifyllt!")
+        } else {
+            console.log("Fel ifyllt!")
+            return
+        } 
+        
+        initiateGame()
+    
+    })
+
+
     
 }
 
 function validateForm() {
     
+    let nick1Ref = document.querySelector("#nick1").value
+    let nick2Ref = document.querySelector("#nick2").value
+    let color1Ref = document.querySelector("#color1").value
+    let color2Ref = document.querySelector("#color2").value
+
+    try {
+        if ((nick1Ref.length < 3 || nick1Ref.length > 10) || (nick2Ref.length < 3 || nick2Ref.length > 10) ) {
+            throw new Error("Namnet måste innehålla 3-10 tecken.")
+        } else if (color1Ref === "#000000" || color1Ref === "#ffffff" || color2Ref === "#000000" || color2Ref === "#ffffff") {
+            throw new Error("Man får inte välja färgerna svart och vit förstås.")
+        }
+
+    document.querySelector("#errorMsg").innerText = ""
+        
+    } catch(error) {
+        document.querySelector("#errorMsg").innerText = error.message
+        return false
+    }
+
+    return true
 }
 
 function initiateGame() {
